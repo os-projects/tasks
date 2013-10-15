@@ -5,11 +5,11 @@ from random import randrange, choice
 
 
 def randstr():
-	return uuid.uuid4().hex
+	return uuid.uuid4().hex[:8]
 
 
 def fill_file_with_entries(fout):
-	entries_count = randrange(100)
+	entries_count = randrange(50)
 	for _ in range(entries_count):
 		entry = randstr() if randrange(2) else str(randrange(2 ** 32))
 		fout.write(entry + '\n')
@@ -35,7 +35,7 @@ def create_random_directory(root):
 
 
 def main():
-	root = './files' if len(sys.argv) < 2 else sys.argv[1]
+	root = '.\\files' if len(sys.argv) < 2 else sys.argv[1]
 	if not os.path.exists(root):
 		os.makedirs(root)
 

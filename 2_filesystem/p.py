@@ -21,6 +21,13 @@ def get_lines(fin):
 	return lines
 
 
+def print_numbers(arr):
+	arr = sorted(arr)
+	chunk_len = 6
+	chunks = [arr[i:i + chunk_len] for i in range(0, len(arr), chunk_len)]
+	pprint(chunks)
+
+
 def main():
 	all_numbers = []
 	root = '.\\files' if len(sys.argv) < 2 else sys.argv[1]
@@ -36,7 +43,8 @@ def main():
 				lines = get_lines(fin)
 				lines = [int(line) for line in lines if line.isdigit()]
 				all_numbers.extend(lines)
-	pprint(sorted(all_numbers))
+
+	print_numbers(all_numbers)
 
 if __name__ == '__main__':
 	main()

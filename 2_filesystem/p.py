@@ -1,31 +1,41 @@
 import random
 import os
 import sys
-from pprint import pprint
+
+
+class AccessError(IOError):
+	def __init__(self, argstring):
+		super(AccessError, self).__init__(argstring)
 
 
 def open_file(filename):
 	failure_chance = 0.15
 	if random.random() < failure_chance:
 		raise IOError('Can\'t open file %s [mock]' % filename)
+	if random.random() < failure_chance:
+		raise AccessError('Can\'t get access to file %s [mock]' % filename)
 	return open(filename)
 
 
 def get_lines(fin):
 	failure_chance = 0.05
-	lines = []
 	for i, line in enumerate(fin):
-		if random.random() < failure_chance:
-			print(IOError('Cant read line %d [mock]' % i))
-		lines.append(line.strip())
-	return lines
+		try:
+			if random.random() < failure_chance:
+				raise IOError('Cant read line %d [mock]' % i)
+			yield line.strip()
+		except IOError as e:
+			print(e)
+
 
 
 def print_numbers(arr):
 	arr = sorted(arr)
 	chunk_len = 6
 	chunks = [arr[i:i + chunk_len] for i in range(0, len(arr), chunk_len)]
-	pprint(chunks)
+	for chunk in chunks:
+		pattern = "{:<10} " * len(chunk)
+		print(pattern.format(*chunk))
 
 
 def main():
@@ -41,10 +51,12 @@ def main():
 			else:
 				print('Opened %s' % filename)
 				lines = get_lines(fin)
-				lines = [int(line) for line in lines if line.isdigit()]
-				all_numbers.extend(lines)
-
+				for line in lines:
+					for part in line.split():
+						if part.isdigit():
+							all_numbers.append(int(part))
 	print_numbers(all_numbers)
+
 
 if __name__ == '__main__':
 	main()

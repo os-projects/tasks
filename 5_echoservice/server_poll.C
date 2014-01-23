@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 
         for (size_t i = 1; i < descriptors.size(); ++i)
         {
-            pollfd desc = descriptors[i];
+            pollfd &desc = descriptors[i];
 
             if (desc.revents == 0)
                 continue;
@@ -78,7 +78,10 @@ int main(int argc, char *argv[])
                 close(desc.fd);
                 desc.fd = -1;
             }
-            send(desc.fd, buffer, len, 0);   
+            else
+            {
+                send(desc.fd, buffer, len, 0);
+            }
         }
         
         if (descriptors[0].revents == POLLIN)

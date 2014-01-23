@@ -3,10 +3,11 @@
 #include <ucontext.h>
 #include <signal.h>
 
+
+ucontext_t ones_context, twos_context;
 const int ones_time = 2;
 const int twos_time = 4;
 
-ucontext_t ones_context, twos_context;
 
 
 void switch_to_twos(int sig);
@@ -47,6 +48,5 @@ int main(void)
     signal(SIGALRM, switch_to_twos);
     alarm(ones_time);
     setcontext(&ones_context);
-    
     return EXIT_SUCCESS;
 }

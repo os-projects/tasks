@@ -3,10 +3,11 @@
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 #include <string.h>
 #include <unistd.h>
 
-const size_t MAXCOUNT(1024);
+const size_t MAXCOUNT = 1024;
 
 int main(int argc, char* argv[])
 {
